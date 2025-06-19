@@ -1,0 +1,24 @@
+services:
+  pilotprep-web:
+    build: .
+    container_name: WebApp
+    ports:
+      - "5173:5173"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@pilotprep-db:5432/pilotprep
+    depends_on:
+      - pilotprep-db
+
+  pilotprep-db:
+    image: postgres:15
+    container_name: PostgresDB
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pilotprep
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
